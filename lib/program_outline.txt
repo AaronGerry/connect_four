@@ -1,0 +1,29 @@
+- grid layout
+  - layout of grid
+  - open/ filled positions
+
+  |                   |
+  |                   |
+  |                   |
+  |                   |
+  |                   |
+  |                   |
+  |                   |
+  |                   |
+  |                   |
+  |                   |
+   A B C D E F G H I J
+
+- round
+  - prompts user for move (coordinates)
+  - switches between player 1 and player 2 move
+  - player associated with specific character (X or O)
+  - sends coordinate and character info to board to print
+
+- want player info too?
+  - all we would store is associated symbol...
+
+- user prompt
+- gameplay
+  - how to win
+  - stalemate

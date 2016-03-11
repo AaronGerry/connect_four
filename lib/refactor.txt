@@ -1,0 +1,30 @@
+# TODO
+# redundancy with data stored in game, 2 instances of player objects, from board and round
+
+# for testing:
+
+def fill_board
+  @board[1..9].reverse.each_with_index do |row, row_index|
+    if row_index % 2 == 0
+      row.each_with_index do |space, col_index|
+        if space.nil?
+          if col_index % 2 == 0
+            row[col_index] = "X"
+          else
+            row[col_index] = "O"
+          end
+        end
+      end
+    else
+      row.each_with_index do |space, col_index|
+        if space.nil?
+          if col_index % 2 == 0
+            row[col_index] = "O"
+          else
+            row[col_index] = "X"
+          end
+        end
+      end
+    end
+  end
+end

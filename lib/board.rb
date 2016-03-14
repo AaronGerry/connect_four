@@ -1,44 +1,39 @@
 require_relative 'round'
+require_relative 'board_row'
 require 'pry'
 
 class Board
-  FOOTER =  ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
-  attr_reader :win
+  FOOTER = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J"]
+  attr_reader :win, :gameboard
 
   def initialize
-    @board = []
-    # build_board
+    @gameboard = []
     10.times do |row|
-      # row = BoardRow.new()
-      row = []
+      row = BoardRow.new
       10.times do |col|
-        # binding.pry
-        row << nil
+        row.contents << nil
         #BoardSlot.new()
       end
-      @board << row
+      @gameboard << row
     end
-    @board << FOOTER
   end
 
   def print
     board_printout = ""
-    @board.each_with_index do |row, row_index|
+
+    @gameboard.each_with_index do |row, row_index|
       cell = []
-      row.each_with_index do |spot, col_index|
+
+      row.contents.each_with_index do |spot, col_index|
         if col_index == 0
           if spot.nil?
             cell << "| "
-          elsif FOOTER.include?(spot)
-            cell << " #{spot}"
           else
             cell << "|#{spot}"
           end
         elsif col_index == 9
           if spot.nil?
             cell << " |"
-          elsif FOOTER.include?(spot)
-            cell << "#{spot}"
           else
             cell << "#{spot}|"
           end
@@ -50,24 +45,42 @@ class Board
       end
       board_printout << cell.join(" ") + "\n"
     end
+    board_printout << self.print_footer
+  end
+
+  def print_footer
+    board_printout = ""
+    cell = []
+
+    FOOTER.each_with_index do |spot, array_index|
+      if array_index == 0
+        cell << " #{spot}"
+      elsif array_index == 9
+        cell << "#{spot} "
+      else
+        cell << spot
+      end
+    end
+    board_printout << cell.join(" ")
     board_printout
   end
 
   def piece_placement(round_info)
-    if @board[0][round_info.current_players_move - 1].nil?
-      @board[0..9].reverse.each do |row|
-        if row[round_info.current_players_move - 1].nil?
-          row[round_info.current_players_move - 1] = round_info.current_players_turn
+    # binding.pry
+    if @gameboard[0].contents[round_info.current_players_move - 1].nil?
+      @gameboard[0..9].reverse.each do |row|
+        if row.contents[round_info.current_players_move - 1].nil?
+          row.contents[round_info.current_players_move - 1] = round_info.current_players_turn
           break
         end
       end
     end
-    @board
+    @gameboard
   end
 
   def column_full(column)
     full = false
-    if @board[0][column - 1] == "X" || @board[0][column - 1] == "O"
+    if @gameboard[0].contents[column - 1] == "X" || @gameboard[0].contents[column - 1] == "O"
       full = true
     end
     full
@@ -83,20 +96,21 @@ class Board
 
     if game_won == false
       # Row winner
-      @board[0..9].reverse.each do |row|
-        if row.each_cons(4).include?(x_winner) || row.each_cons(4).include?(o_winner)
+
+      @gameboard[0..9].reverse.each do |row|
+        if row.contents.each_cons(4).include?(x_winner) || row.contents.each_cons(4).include?(o_winner)
           game_won = true
         end
 
         # Column winner
-        col_array << row[column - 1]
+        col_array << row.contents[column - 1]
         col_array
           if col_array.each_cons(4).include?(x_winner) || col_array.each_cons(4).include?(o_winner)
             game_won = true
           end
 
         # Tie
-        if @board[9].count(nil) == 0 && @board[0].count(nil) == 0
+        if @gameboard[9].contents.count(nil) == 0 && @gameboard[0].contents.count(nil) == 0
           game_won = "tie"
         end
       end

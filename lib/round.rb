@@ -13,6 +13,14 @@ class Round
     @player_2 = player_2
     @current_players_move = nil
     @current_players_turn = nil
+    self.sort
+  end
+
+  def sort
+    player_symbols = ["X", "O"]
+    player_symbols.shuffle!
+    @player_1.symbol = player_symbols.pop
+    @player_2.symbol = player_symbols.pop
   end
 
   def move

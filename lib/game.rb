@@ -19,13 +19,6 @@ class Game
     self.play
   end
 
-  def sort
-    player_symbols = ["X", "O"]
-    player_symbols.shuffle!
-    @player_1.symbol = player_symbols.pop
-    @player_2.symbol = player_symbols.pop
-  end
-
   def print_board
     puts @board.print
   end
@@ -49,7 +42,6 @@ class Game
   end
 
   def play
-    self.sort
     @round = Round.new(@player_1, @player_2)
 
     while self.win? == false
